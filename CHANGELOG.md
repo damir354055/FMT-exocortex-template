@@ -147,6 +147,10 @@ Refs: WP-NNN
 
 ## [Unreleased]
 
+### Added
+
+- feat(cursor): адаптер шаблона под Cursor — `.cursor/rules/*.mdc`, `.cursor/mcp.json`, раздел в `docs/PORTABILITY.md`, FAQ в README, идентичность/Co-Authored-By в `AGENTS-agent-blocks.md`
+
 ## [0.39.2] — 2026-09-04
 
 ### Added

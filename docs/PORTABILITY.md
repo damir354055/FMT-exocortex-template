@@ -33,6 +33,30 @@ IWE разделён на три слоя. Слой определяет, нас
 
 ---
 
+## Cursor
+
+**Работает с адаптером в шаблоне** — Project Rules + MCP + общий `AGENTS.md`.
+
+1. Открой форк / workspace IWE в Cursor (корень с `AGENTS.md` и `.cursor/`).
+2. Cursor подхватит:
+   - **`AGENTS.md`** — общее ядро правил (как у Kimi/Codex);
+   - **`.cursor/rules/*.mdc`** — тонкий адаптер (WP Gate, язык, ограничения vs Claude Code);
+   - **`.cursor/mcp.json`** — HTTP MCP `iwe-knowledge` → `https://mcp.aisystant.com/mcp` (OAuth в UI Cursor при первом подключении).
+3. Проверка: спроси агента «какие 3 правила из AGENTS.md ты применяешь?» и «срабатывает ли WP Gate до правок?».
+
+**Кастомизация:** свои правила — в `.cursor/rules/` (отдельные `.mdc`) или в `extensions/` / `AGENTS-agent-blocks.md` с последующим `bash scripts/sync-agent-instructions.sh --force`. Не правь `AGENTS.md` вручную.
+
+**Что не работает через Cursor (без Claude Code):**
+- хуки `.claude/hooks/` — не запускаются Cursor’ом;
+- слэш-скиллы Claude Code (`/day-open`, `/ke`, `/archgate`, …) — выполняй по `SKILL.md` вручную или через Claude Code CLI;
+- PreToolUse / Pull-on-Touch и прочие event-hooks Claude Code.
+
+**MCP:** проектный файл — `.cursor/mcp.json`. Корневой `.mcp.json` после `setup.sh` — для Claude Code; содержимое серверов при необходимости скопируй вручную. Доп. серверы (local-gateway, Calendar) — по [AGENT-VENDOR-SETUP.md](AGENT-VENDOR-SETUP.md) и [web-connect-guide.md](onboarding/web-connect-guide.md).
+
+**Коммиты:** атрибуция — `Co-Authored-By: Cursor Agent <noreply@cursor.com>` (см. `AGENTS-agent-blocks.md`).
+
+---
+
 ## Hermes Agent
 
 Два способа подключить Aisystant MCP — выбери удобный:
@@ -55,13 +79,13 @@ hermes mcp login aisystant
 
 ## Что зависит от Claude Code
 
-Если ты используешь Cursor, Copilot, Gemini или другой ассистент (не Kimi и не Hermes) — следующие компоненты L1 требуют замены или адаптации:
+Если ты используешь Copilot, Gemini или другой ассистент (не Claude Code, Kimi, Hermes и не Cursor) — следующие компоненты L1 требуют замены или адаптации:
 
-- **Формат CLAUDE.md** — читается Claude Code при старте. Kimi читает `AGENTS.md` (уже в шаблоне). Другие ассистенты используют иные форматы (`.cursorrules`, системный промпт и т.д.)
+- **Формат CLAUDE.md** — читается Claude Code при старте. Kimi/Codex/Cursor читают `AGENTS.md` (уже в шаблоне). Cursor дополнительно — `.cursor/rules/*.mdc`. Другие ассистенты — свои форматы (системный промпт и т.д.)
 - **`.claude/hooks/`** — события (pre-commit, post-tool) — механизм Claude Code CLI
-- **Скиллы и слэш-команды** (`/day-open`, `/ke`, `/archgate`) — работают только внутри Claude Code
-- **MCP-серверы** — Hermes поддерживает. Другие ассистенты — зависит от реализации.
-- **Выбор модели** (Opus / Sonnet / Haiku) — специфика Anthropic API
+- **Скиллы и слэш-команды** (`/day-open`, `/ke`, `/archgate`) — работают только внутри Claude Code (в Cursor — по `SKILL.md` вручную)
+- **MCP-серверы** — Claude Code (`.mcp.json`), Cursor (`.cursor/mcp.json`), Hermes. Другие — зависит от реализации
+- **Выбор модели** (Opus / Sonnet / Haiku) — специфика Anthropic API / настроек IDE
 
 **Что переносится без изменений:** протоколы ОРЗ как концепции, Pack/DS/Base архитектура, логика memory и capture, всё в `extensions/` и `params.yaml`.
 
@@ -97,7 +121,7 @@ hermes mcp login aisystant
 ## Как адаптировать под другую платформу
 
 1. Перенеси L3 (`extensions/`, `params.yaml`) без изменений — это твоя логика
-2. Перепиши L1 под формат нового ассистента (системный промпт, `.cursorrules` и т.д.)
+2. Перепиши L1 под формат нового ассистента (системный промпт, Project Rules и т.д.). Для Cursor ориентир уже в репо: `.cursor/rules/` + `.cursor/mcp.json`
 3. Концепции протоколов (ОРЗ, Pack, capture) — опиши в новом формате: они платформенно-нейтральны
 
 ---
@@ -124,9 +148,10 @@ IWE не привязан к конкретному LLM или агенту. Л�
 
 1. **Создай файл инструкций** — адаптер для чтения агентом. Примеры:
    - Claude Code читает `CLAUDE.md`
-   - Kimi Code читает `AGENTS.md` (генерируется из CLAUDE.md скриптом `sync-agent-instructions.sh`)
+   - Kimi Code / Codex читают `AGENTS.md` (генерируется из CLAUDE.md скриптом `sync-agent-instructions.sh`)
    - Hermes получает инструкции через MCP `get_instructions`
-   - Cursor — `.cursorrules`, Copilot — системный промпт через `.github/copilot-instructions.md`
+   - Cursor — `AGENTS.md` + `.cursor/rules/*.mdc` + `.cursor/mcp.json` (уже в шаблоне)
+   - Copilot — системный промпт через `.github/copilot-instructions.md`
 
 2. **Добавь агент в `setup.sh`** — включи имя CLI-команды в `AI_CLI_CANDIDATES` (через env или хардкод в скрипте).
 
@@ -136,4 +161,4 @@ IWE не привязан к конкретному LLM или агенту. Л�
 
 ---
 
-*Последнее обновление: 2026-06-04*
+*Последнее обновление: 2026-09-08 (адаптер Cursor)*

@@ -14,6 +14,7 @@
 | `kimi` CLI / расширение Kimi для VS Code | **Kimi Code** | Kimi K2 (Moonshot AI) |
 | `codex` CLI / расширение ChatGPT | **Codex** | GPT-5 Codex (OpenAI) |
 | `claude` CLI / Claude Code | **Claude Code** | Claude (Anthropic) |
+| Cursor IDE (Agent / Chat) | **Cursor Agent** | модель из настроек Cursor |
 | Aisystant MCP / Telegram-оркестратор | **Hermes** | Hermes (Nous Research) |
 
 На вопрос о своей идентичности отвечай из этой таблицы и фактического канала запуска, а не из общих знаний о том, кто чаще пишет такие инструкции. Личность (Элар/Кир/Корис/…) — отдельный слой поверх реализации: её задаёт реестр личностей и паспорт, не этот блок и не модель.
@@ -56,6 +57,14 @@ git commit -m "feat: description" --trailer "Co-Authored-By: Hermes <noreply@nou
 ```
 
 **Hermes Agent** — оркестратор в экосистеме IWE (РП392). Подключён к Aisystant MCP, работает через CLI/Telegram. Hermes НЕ заменяет Claude Code или Kimi Code в кодинге — он координирует, запоминает и даёт мобильный доступ.
+
+### Для коммитов с участием Cursor Agent
+
+```bash
+git commit -m "feat: description" --trailer "Co-Authored-By: Cursor Agent <noreply@cursor.com>"
+```
+
+Cursor читает `AGENTS.md` и `.cursor/rules/*.mdc`. Хуки и слэш-скиллы Claude Code в Cursor не автозапускаются — см. `docs/PORTABILITY.md` § Cursor.
 
 ## IWE Instructions Level (Kimi headless)
 

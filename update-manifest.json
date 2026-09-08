@@ -756,6 +756,18 @@
       "sha256": "54356facf8d596bad78889791927b0d8977d75a836cffbcc184d7611905af673"
     },
     {
+      "path": ".cursor/mcp.json",
+      "sha256": "477bb0052f9fb5fcf31a8939caf242415902cd3910e6cc98385145c3442f26f9"
+    },
+    {
+      "path": ".cursor/rules/iwe-core.mdc",
+      "sha256": "7268663f118b542b192376948badff71f8cd73985964d3c0e871cd10891c1ddd"
+    },
+    {
+      "path": ".cursor/rules/iwe-cursor-limits.mdc",
+      "sha256": "f5f6db3eea8817969ac94f4fc6ab571f39ed9d5aa4d41a46c40e8e3525a9f806"
+    },
+    {
       "path": ".githooks/commit-msg",
       "sha256": "f8507693252517c89deb4b963cdd499aa570dbba6663cb62a2ca4db1f8e2f6b9"
     },
@@ -801,15 +813,15 @@
     },
     {
       "path": "AGENTS-agent-blocks.md",
-      "sha256": "609c4037e9d70ea4a30c75d83626e48041e3b4746c3a217ba868a83bc6897738"
+      "sha256": "f285ca3b748a7320692886a28f0b209dbdbb073b712a269157b043789b78cb84"
     },
     {
       "path": "AGENTS.md",
-      "sha256": "08401337942bfbb8469007f2a9d7d68465ec6c64037442fbd25d3b16c5e25035"
+      "sha256": "d86f8474bfe635ca08ff58347a1de534d12bc0ffcf95fafa8db0b617a6ce93ec"
     },
     {
       "path": "CHANGELOG.md",
-      "sha256": "ee615b766d65bb420db79b055cb1687496b4f1f3447970bd775cbd5a2fc734c0"
+      "sha256": "95fcb9103ebc8982f7947f8f5104ec03d52d57e60b006e357ec0d995f133ab53"
     },
     {
       "path": "CLAUDE.md",
@@ -881,7 +893,7 @@
     },
     {
       "path": "docs/PORTABILITY.md",
-      "sha256": "48d7302a1d4124d336574f90f737b48d68d5339bea12032ffb3bdf9a8b10b316"
+      "sha256": "6f9001729639e2dbf0aa6dc7623c1685e58486a7eade6b250a9ca63ac7e67d51"
     },
     {
       "path": "docs/QUICK-START.md",
