@@ -1,7 +1,7 @@
 # IWE — Intellectual Work Environment
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-0.40.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.40.1-blue.svg)](CHANGELOG.md)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows%20(Git%20Bash)-lightgrey.svg)]()
 [![EN sync](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/TserenTserenov/FMT-exocortex-template/en-draft/badge-data.json)](https://github.com/TserenTserenov/FMT-exocortex-template/tree/en-draft)
 
@@ -226,13 +226,12 @@ multiplier_enabled: true    # Мультипликатор IWE
 A: Для полной установки (Claude Code) — рекомендуется Claude Pro ($20/мес). При необходимости можно перейти на Claude Max (~$100/мес) для работы без ограничений. Для минимальной (`setup.sh --core`) — работает с любым AI CLI. Подробнее: [SETUP-GUIDE.md](docs/SETUP-GUIDE.md).
 
 **Q: Работает ли с другими ИИ (не Claude)?**
-A: Да, из коробки:
+A: Да, три агента поддерживаются из коробки:
 - **Claude Code** — полная поддержка: читает `CLAUDE.md`, все скиллы и хуки работают.
 - **Kimi Code** (VS Code) — читает `AGENTS.md` автоматически при открытии репо. Кастомизация: `extensions/` или `AGENTS-agent-blocks.md`. Скиллы (`/day-open` и др.) через Claude Code.
-- **Cursor** — `AGENTS.md` + Project Rules в `.cursor/rules/` + MCP в `.cursor/mcp.json`. Хуки и слэш-скиллы Claude Code не автозапускаются — протоколы по `SKILL.md` или через Claude Code. Подробнее: [PORTABILITY.md](docs/PORTABILITY.md) § Cursor.
 - **Hermes Agent** — подключи Aisystant MCP через настройки Hermes, и он получит инструкции автоматически.
 
-Для Copilot, Gemini и прочих — адаптация по [PORTABILITY.md](docs/PORTABILITY.md).
+Для других агентов (Cursor, Copilot, Gemini) потребуется адаптация. Подробнее: [PORTABILITY.md](docs/PORTABILITY.md).
 Минимальная установка (`setup.sh --core`) работает без привязки к конкретному агенту.
 
 **Q: Работает ли на Linux/Windows?**
