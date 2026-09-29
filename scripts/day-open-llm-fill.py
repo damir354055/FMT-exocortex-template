@@ -828,6 +828,25 @@ def fill_chunk(chunk: dict, weekplan: str, active_wps: str, calendar: str,
 
     if not response.strip():
         raise RuntimeError(f"Empty response for section {header}")
+    if is_today_plan:
+        # WP-561 Ф11 (found live 2026-09-09): the example format row (day-open-
+        # scaffold.sh, "| ... | NNN | ... | X | pending |") is only half-marked
+        # as a placeholder -- one cell wrapped in <!-- PENDING -->, the rest
+        # plain literals -- so the LLM sometimes keeps it verbatim alongside
+        # the real per-WP rows instead of dropping it. day-open-checks-runner.sh
+        # already blocks the commit on this (Block DOF check), but that check
+        # only reports "1/22 failed", not why -- print the offending line(s)
+        # here, at the point they were produced, so the answer is in whatever
+        # log captures this script's stderr, without needing to reproduce the run.
+        leftover = [ln for ln in response.splitlines()
+                    if ln.strip().startswith("|")
+                    and re.search(r"\|\s*NNN\s*\||<!-- PENDING -->|\|\s*X\s*\|", ln)]
+        if leftover:
+            print("[WARN] today_plan response still contains the scaffold's "
+                  "example row (NNN/X/PENDING) -- Block DOF check will block "
+                  "the commit. Offending line(s):", file=sys.stderr)
+            for ln in leftover:
+                print(f"[WARN]   {ln}", file=sys.stderr)
     return response
 
 
