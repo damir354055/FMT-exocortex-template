@@ -198,9 +198,11 @@ sync_owned_memory_files() {
 
   "$STDLIB_PYTHON3" - "$@" <<'PYEOF'
 import hashlib
-import fcntl
 import json
 import os
+if os.name != "nt":
+    # fcntl is POSIX-only; the Windows branch (main_windows) never uses it.
+    import fcntl
 from pathlib import Path, PurePosixPath
 import re
 import stat
@@ -1726,8 +1728,15 @@ do_backup() {
   # #380: rules may carry an explicitly legal USER-SPACE block. Mirror them to
   # a dedicated subtree so recovery never confuses platform rules with memory.
   if [ -d "$WORKSPACE_DIR/.claude/rules" ]; then
-    mkdir -p "$EXOCORTEX_DST/rules"
-    rsync -a --delete "$WORKSPACE_DIR/.claude/rules/" "$EXOCORTEX_DST/rules/"
+    if command -v rsync >/dev/null 2>&1; then
+      mkdir -p "$EXOCORTEX_DST/rules"
+      rsync -a --delete "$WORKSPACE_DIR/.claude/rules/" "$EXOCORTEX_DST/rules/"
+    else
+      # No rsync (e.g. Git Bash on Windows): recreate the mirror to keep --delete semantics.
+      rm -rf "$EXOCORTEX_DST/rules"
+      mkdir -p "$EXOCORTEX_DST/rules"
+      cp -R "$WORKSPACE_DIR/.claude/rules/." "$EXOCORTEX_DST/rules/"
+    fi
   fi
 
   # day-rhythm is also a separate root artefact. Exact bytes win except for a
